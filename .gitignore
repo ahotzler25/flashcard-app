@@ -1,0 +1,3 @@
+node_modules
+.qualified-attach.json
+src/__tests__
