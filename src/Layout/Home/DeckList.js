@@ -15,7 +15,7 @@ export default function DeckList({id, name, description, cards}) {
             <div className='card'>
                 <div className='card-body'>
                     <h3 className='card-title'>{name}</h3>
-                    Deck #{id}: Some # of cards
+                    Deck #{id}: {cards.length} cards
                 </div>
                 <p>{description}</p>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>

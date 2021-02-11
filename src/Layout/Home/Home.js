@@ -23,11 +23,10 @@ export default function Home() {
     }, []);
 
 
-
     return (
         <div>
             {/* Add button here? */}
-            <Link to='/decks/new' className='btn btn-primary btn-lg'>+Add Deck</Link> 
+            <Link to='/decks/new' className='btn btn-primary btn-lg'>+ Create Deck</Link> 
                 {listOfDecks.map(({id, name, description, cards}) => (
                     <DeckList 
                         key={id} id={id} description={description} name={name} cards={cards}
