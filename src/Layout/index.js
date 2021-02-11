@@ -1,40 +1,37 @@
-import React, {Fragment, useState, useEffect} from "react";
+import React, { Fragment } from "react";
 import {Switch, Route} from 'react-router-dom';
 import Header from "./Header";
 import NotFound from "./NotFound";
-import DeckList from './DeckList';
-import Study from './Study';
-import { listDecks } from '../utils/api/index';
+import Home from './Home/Home';
+import Study from './Deck/Study';
+import CardList from './Cards/CardList';
+import AddDeck from './Deck/AddDeck';
 
+
+// DO ALL ROUTING HERE
 function Layout() {
-  const [ listOfDecks, setListOfDecks ] = useState([]);
 
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    // Create async function to fetch listDecks data
-    const loadDecklists = async () => {
-      const decks = await listDecks(abortController.signal);
-      setListOfDecks(() => decks);
-    }
-
-    loadDecklists();
-    return () => abortController.abort();
-  }, [listOfDecks])
 
   return (
-    
     <Fragment>
       <div className="container">
-        {/* TODO: Implement the screen starting here */}
         <Header />
+        {/* TODO: Implement the screen starting here */}
         <Switch>
-          <Route path="/" exact={true}>
-            <DeckList listOfDecks={listOfDecks}/>
+          <Route exact={true} path="/">
+            <Home />
           </Route>
-          <Route>
-            <Study path="/decks/:deckId/study" />
+          <Route path='/decks/new'>
+            <AddDeck />
           </Route>
+          <Route path="/decks/:deckId/study">
+            <Study />
+          </Route>
+          <Route path='/decks/:deckId'>
+            <CardList />
+          </Route>
+
+
           <Route>
             <NotFound />
           </Route>
