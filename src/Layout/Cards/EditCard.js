@@ -56,10 +56,12 @@ export default function EditCard() {
             </nav>
             <h3>Edit Card</h3>
                 <form onSubmit={handleSubmit}>
-                    <h6>Front</h6>
-                        <textarea className='form-control' onChange={handleChange} value={formData.front} />
-                    <h6>Back</h6>
-                        <textarea className='form-control' onChange={handleChange} value={formData.back} />
+                    <label htmlFor='front'><h6>Front</h6></label>
+                    <textarea name='front' className='form-control' onChange={handleChange} 
+                        value={formData.front} required />
+                    <label htmlFor='back'><h6>Back</h6></label>
+                        <textarea name='back' className='form-control' onChange={handleChange} 
+                            value={formData.back} required />
                 <div>
                     <Link to={`/decks/${deckId}`}>
                         <button className='btn btn-secondary'>Cancel</button>
