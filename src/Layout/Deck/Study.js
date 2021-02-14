@@ -1,33 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { readDeck } from '../../utils/api';
-
+import { Link, useParams } from 'react-router-dom';
+import { readDeck } from '../../utils/api/index';
+import StudyCard from './StudyCard';
 
 export default function Study() {
-
     const [deck, setDeck] = useState({});
     const { deckId } = useParams();
 
     // Initialize/display deck
-
     useEffect(() => {
         const abortController = new AbortController();
         const loadDeck = async () => {
-            const newDeck = await readDeck(deckId);
-            setDeck(() => newDeck);
+            const getDeck = await readDeck(deckId);
+            setDeck(() => getDeck);
         };
 
         loadDeck();
-        return () => abortController.signal;
-    }, [deckId])
+        return () => abortController.abort;
+    }, [deckId]);
 
 
-    return (
-        <div>
-            <h2>Study Page</h2>
-            <p>DeckId: {deckId}</p>
-            <p>Deck Name: {deck.name}</p>
-            
-        </div>
-    )
+    // HOW DOES THIS WORK? STUDY
+    if (Object.keys(deck).length) {
+        return (
+            <div>
+                <nav aria-label='breadcrumb'>
+                    <ol className='breadcrumb'>
+                        <li className='breadcrumb-item'>
+                            <Link to='/'>Home</Link>
+                        </li>
+                        <li className='breadcrumb-item'>
+                            <Link to={`/decks/${deckId}`}>{deck.name}</Link>
+                        </li>
+                        <li className='breadcrumb-item active'>
+                            Study
+                        </li>
+                    </ol>
+                </nav>
+                <h2>{deck.name}: Study</h2>
+                    {/* DISPLAY INDIVIDUAL CARDS FOR STUDY */}
+                    <StudyCard cards={deck.cards} />
+            </div>
+        );
+    } else {
+        return <p>Loading...</p>
+    }
 }

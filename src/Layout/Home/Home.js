@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { listDecks } from '../../utils/api/index';
 
 
-export default function Home() {
+export default function Home({numberOfDecks, updateDecks}) {
     const [ listOfDecks, setListOfDecks ] = useState([]);
 
     // DECKS LIST
@@ -20,16 +20,18 @@ export default function Home() {
       loadListOfDecks();
       return () => abortController.abort();
       // Something causes an infinite loop when passed in state var
-    }, []);
+      // POTENTIALLY FIXED
+    }, [numberOfDecks]);
 
 
     return (
         <div>
-            {/* Add button here? */}
             <Link to='/decks/new' className='btn btn-primary btn-lg'>+ Create Deck</Link> 
+            {/* LOOP THROUGH DECKS AND DISPLAY THEM */}
                 {listOfDecks.map(({id, name, description, cards}) => (
                     <DeckList 
-                        key={id} id={id} description={description} name={name} cards={cards}
+                        key={id} id={id} description={description} 
+                        name={name} cards={cards} updateDecks={updateDecks}
                     />
                 ))}
         </div>
