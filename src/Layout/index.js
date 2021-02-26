@@ -15,11 +15,12 @@ import EditDeck from './Deck/EditDeck';
 function Layout() {
 
   const [numberOfDecks, setNumberOfDecks] = useState(0);
+  const [selectedDeck, setSelectedDeck ] = useState([]);
 
   // KEEPS HOMEPAGE DECKLIST UPDATED
   const updateDecks = (value) => {
     setNumberOfDecks(() => numberOfDecks + value);
-  }
+  };
 
   return (
     <Fragment>
@@ -43,10 +44,10 @@ function Layout() {
             <Deck updateDecks={updateDecks} />
           </Route>
           <Route path='/decks/:deckId/cards/:cardId/edit'>
-            <EditCard />
+            <EditCard selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck} />
           </Route>
           <Route path='/decks/:deckId/cards/new'>
-            <AddCard />
+            <AddCard selectedDeck={selectedDeck} setSelectedDeck={setSelectedDeck} />
           </Route>
           <Route>
             <NotFound />

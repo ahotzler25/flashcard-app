@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { createCard, readDeck } from '../../utils/api';
+import CardForm from './CardForm';
 
-export default function AddCard() {
+export default function AddCard({ selectedDeck, setSelectedDeck }) {
     const { deckId } = useParams();
     const initialFormData = { front: "", back: "" };
-    const [ formData, setFormData ] = useState(initialFormData)
-    const [ deck, setDeck ] = useState({});
+    const [ formData, setFormData ] = useState({ ...initialFormData});
 
+    // LIFT THIS UP TO PARENT COMPONENT 
+    // const [ deck, setDeck ] = useState({});
 
-    // WRITE SUBMIT HANDLER AND BUTTON
-    // UPDATE DECKS ACCORDINGLY 
 
     const handleChange = (event) => {
         setFormData({...formData, [event.target.name]: event.target.value})
@@ -26,7 +26,7 @@ export default function AddCard() {
         const abortController = new AbortController();
         const getDeck = async () => {
             const deck = await readDeck(deckId, abortController.signal);
-            setDeck(() => deck);
+            setSelectedDeck(() => deck);
         };
         getDeck();
         return () => abortController.abort();
@@ -41,7 +41,7 @@ export default function AddCard() {
                     </li>
                     <li className='breadcrumb-item'>
                         <Link to={`/decks/${deckId}`}>
-                            {deck.name}
+                            {selectedDeck.name}
                         </Link>
                     </li>
                     <li className='breadcrumb-item active' aria-current='page'>
@@ -49,23 +49,8 @@ export default function AddCard() {
                     </li>
                 </ol>
             </nav>
-            <h3>{deck.name}: Add Card</h3>
-            <div className='form-group'>
-                <form onSubmit={handleCardSubmit}>
-                    <h6>Front</h6>
-                        <label htmlFor='front' />
-                        <textarea name='front' placeholder='Front Side' 
-                            value={formData.front} onChange={handleChange} required />
-                    <h6>Back</h6>
-                    <label htmlFor='back' />
-                        <textarea name='back' placeholder='Back Side' 
-                        value={formData.back} onChange={handleChange} required />
-                    <Link to={`/decks/${deckId}`} >
-                        <button className='btn btn-secondary'>Done</button>
-                    </Link>
-                    <button type='submit' className='btn btn-primary'>Submit</button>
-                </form>
+            <h3>{selectedDeck.name}: Add Card</h3>
+                <CardForm handleChange={handleChange} handleCardSubmit={handleCardSubmit} cardData={formData} selectedDeck={selectedDeck} />
             </div>
-        </div>
     )
 };
